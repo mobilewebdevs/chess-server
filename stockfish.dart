@@ -21,11 +21,8 @@ void main() {
     connection.onMessage = (String message) => connection.send("notready");
     
     // Once process is started send all data from WebSocket to stockfish.
-    stockfish.onStart = () =>
-        connection.onMessage = ((String message) {
-            print(message);
-            stockfish.stdin.writeString("$message\n");
-        });
+    stockfish.onStart = () => connection.onMessage =
+        ((String message) => stockfish.stdin.writeString("$message\n"));
 
     // Close stockfish connection when WebSocket disconnects.
     connection.onClosed = (int status, String reason) => stockfish.close();
